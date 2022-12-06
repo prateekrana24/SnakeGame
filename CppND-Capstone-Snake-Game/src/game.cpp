@@ -20,6 +20,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   bool running = true;
 
   while (running) {
+    // SDL_GetTicks() Returns an unsigned 32-bit value representing the number of milliseconds since the SDL library initialized.
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.

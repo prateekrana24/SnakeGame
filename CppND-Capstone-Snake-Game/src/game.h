@@ -18,6 +18,7 @@ class Game {
  private:
   Snake snake;
   SDL_Point food;
+  SDL_Point blocker;
 
   std::random_device dev;
   std::mt19937 engine;
