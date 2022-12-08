@@ -32,6 +32,11 @@ Renderer::Renderer(const std::size_t screen_width,
     std::cerr << "Renderer could not be created.\n";
     std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
   }
+        
+//   path = SDL_GetBasePath();
+//   path += "../Chopic.ttf";
+//   textFont = TTF_OpenFont(path.c_str(), 40);
+  
 }
 
 Renderer::~Renderer() {
@@ -49,13 +54,14 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   SDL_RenderClear(sdl_renderer);
   
   //NEW: Prateek Code for Intro Screen
+
   IntroScreen(block);
-  SDL_Event e;
-  while (SDL_PollEvent(&e)) {
-    if (e.type == SDL_KEYDOWN) {
-      SDL_Log("Let the games begin...");
-    }
-  }
+//   SDL_Event e;
+//   while (SDL_PollEvent(&e)) {
+//     if (e.type == SDL_KEYDOWN) {
+//       SDL_Log("Let the games begin...");
+//     }
+//   }
     
   // Render food
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xCC, 0x00, 0xFF);
@@ -91,16 +97,17 @@ void Renderer::IntroScreen(SDL_Rect& block) {
   	
   	int SDL_QueryTexture_W = 20;
  	int SDL_QueryTexture_H = 20;
-  	SDL_Color c = {150, 150, 150};
+  	SDL_Color c = {255, 255, 255};
+  
   	path = SDL_GetBasePath();
   	path += "../Chopic.ttf";
-  
   	textFont = TTF_OpenFont(path.c_str(), 40);
+  
   	textAppearance = TTF_RenderText_Blended_Wrapped(textFont, intro_statement.c_str(), c, 100);
   	area = SDL_CreateTextureFromSurface(sdl_renderer, textAppearance);
   
   	SDL_QueryTexture(area, NULL, NULL, &SDL_QueryTexture_W, &SDL_QueryTexture_H);
- 	SDL_Rect dstrect = {0, 0, 20, 20};
+ 	SDL_Rect dstrect = {0, 0, SDL_QueryTexture_W, SDL_QueryTexture_H};
   	SDL_RenderCopy(sdl_renderer, area, NULL, &dstrect);
 
 }

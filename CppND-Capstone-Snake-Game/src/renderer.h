@@ -1,11 +1,12 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <SDL_ttf.h>
 #include <vector>
 #include <string>
 #include "SDL.h"
-#include <SDL_ttf.h>
 #include "snake.h"
+
 
 class Renderer {
  public:
@@ -26,7 +27,6 @@ class Renderer {
   TTF_Font *textFont;
   std::string path;
   std::string intro_statement;
-  
 
   const std::size_t screen_width;
   const std::size_t screen_height;
