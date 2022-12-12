@@ -4,9 +4,6 @@
 #include <thread>
 #include <chrono>
 
-//Prateek Code: global variables needed for damage accumulation counter
-int damage = 0;
-bool happen = false;
 
 //Prateek Code: the random_w and random_h have been adjusted to account for foods, objects, and bad foods
 //not appearing on the wall borders

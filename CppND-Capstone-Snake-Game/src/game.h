@@ -14,6 +14,10 @@ class Game {
            std::size_t target_frame_duration);
   int GetScore() const;
   int GetSize() const;
+ 
+  //Prateek Code: variables needed for damage accumulation counter
+  int damage{0};
+  bool happen{false};
 
  private:
   Snake snake;
@@ -28,7 +32,6 @@ class Game {
   std::uniform_int_distribution<int> random_h;
 
   int score{0};
-  int replicate;
 
   void PlaceFood();
   void ObjectPlacement();
