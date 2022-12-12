@@ -117,7 +117,7 @@ void Game::Update() {
   }
 }
 
-//Prateek Code: this code places the bad food
+//Prateek Code: this code places the bad food on the grid
 void Game::PlaceBadFood() {
   int x, y;
   while (true) {
