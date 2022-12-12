@@ -18,6 +18,8 @@ class Game {
  private:
   Snake snake;
   SDL_Point food;
+  SDL_Point object;
+  SDL_Point bad_food;
   SDL_Point blocker;
 
   std::random_device dev;
@@ -26,8 +28,11 @@ class Game {
   std::uniform_int_distribution<int> random_h;
 
   int score{0};
+  int replicate;
 
   void PlaceFood();
+  void ObjectPlacement();
+  void PlaceBadFood();
   void Update();
 };
 

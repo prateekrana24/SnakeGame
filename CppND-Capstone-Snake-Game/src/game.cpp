@@ -1,13 +1,32 @@
 #include "game.h"
 #include <iostream>
 #include "SDL.h"
+#include <thread>
+#include <chrono>
 
+//Prateek Code: global variables needed for damage accumulation counter
+int damage = 0;
+bool happen = false;
+
+//Prateek Code: the random_w and random_h have been adjusted to account for foods, objects, and bad foods
+//not appearing on the wall borders
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
       engine(dev()),
-      random_w(0, static_cast<int>(grid_width - 1)),
-      random_h(0, static_cast<int>(grid_height - 1)) {
+      random_w(1, static_cast<int>(grid_width - 2)),
+      random_h(1, static_cast<int>(grid_height - 2)) 
+{
+  //Prateek Code: when the constructor executes, the food, object, and bad food will get placed via functions
   PlaceFood();
+  ObjectPlacement();
+  PlaceBadFood();
+}
+
+//Prateek Code: Introduction to the Snake Game Function
+std::string SnakeIntro() {
+	std::string intro_statement = "Welcome to the Snake Game. In this game, you control a snake that is looking for food. \nUsing the 'W', 'A', 'S', and 'D' keyboard characters, you can move the snake up, left, down, or right. \nWhen you eat a piece of food, your snake's tail will grow longer. \nIn addition, you will lose the game if you hit the wall borders or the black obstacle. \nAlso, there is bad food as well which can injure you, so make sure you don't get 2 damage hits otherwise you will lose. \nPress the 'OK' button to start.";
+  
+  	return intro_statement;
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -18,6 +37,10 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
+  
+  //Prateek Code: Introduction to the Snake Game Display
+  std::string intro_message = SnakeIntro();
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Snake Game Introduction", intro_message.c_str(), renderer.sdl_window);
 
   while (running) {
     // SDL_GetTicks() Returns an unsigned 32-bit value representing the number of milliseconds since the SDL library initialized.
@@ -26,8 +49,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food);
-
+    renderer.Render(snake, food, object, bad_food);
+    
     frame_end = SDL_GetTicks();
 
     // Keep track of how long each loop through the input/update/render cycle
@@ -37,7 +60,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count);
+      renderer.UpdateWindowTitle(score, frame_count, damage, happen, snake);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -65,6 +88,7 @@ void Game::PlaceFood() {
     }
   }
 }
+                                  
 
 void Game::Update() {
   if (!snake.alive) return;
@@ -80,7 +104,51 @@ void Game::Update() {
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();
-    snake.speed += 0.02;
+    snake.speed += 0.01;
+  }
+  
+  //Prateek Code: this is when the user hits the bad food and the damage increments
+  else if (bad_food.x == new_x && bad_food.y == new_y) {
+    PlaceBadFood();
+    snake.speed -= 0.005;
+    damage++;
+  }
+  
+  //Prateek Code: this is when the user hits the object and the game will end
+  else if (object.x == new_x && object.y == new_y) {
+  	snake.alive = false;
+  }
+}
+
+//Prateek Code: this code places the bad food
+void Game::PlaceBadFood() {
+  int x, y;
+  while (true) {
+    x = random_w(engine);
+    y = random_h(engine);
+    // Check that the location is not occupied by a snake item before placing
+    // food.
+    if (!snake.SnakeCell(x, y)) {
+      bad_food.x = x;
+      bad_food.y = y;
+      return;
+    }
+  }
+}   
+
+//Prateek Code: this code places the object that automatically ends the game if the user hits it
+void Game::ObjectPlacement() {
+  int x, y;
+  while (true) {
+    x = random_w(engine);
+    y = random_h(engine);
+    // Check that the location is not occupied by a snake item before placing
+    // food.
+    if (!snake.SnakeCell(x, y)) {
+      object.x = x;
+      object.y = y;
+      return;
+    }
   }
 }
 

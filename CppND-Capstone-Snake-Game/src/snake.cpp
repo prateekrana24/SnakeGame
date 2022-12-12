@@ -54,6 +54,24 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) 
     growing = false;
     size++;
   }
+  
+  //Prateek Code: Snake dies when it hits the walls of the grid
+  if (current_head_cell.x == grid_width - 1) {
+  	alive = false;
+  }
+  
+  else if (current_head_cell.x == 0) {
+  	alive = false;
+  }
+  
+  else if (current_head_cell.y == grid_height - 1) {
+  	alive = false;
+  }
+  
+  else if (current_head_cell.y == 0) {
+    alive = false;
+  }
+  
 
   // Check if the snake has died.
   for (auto const &item : body) {
@@ -64,7 +82,9 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) 
   }
 }
 
-void Snake::GrowBody() { growing = true; }
+void Snake::GrowBody() { 
+  growing = true; 
+}
 
 // Inefficient method to check if cell is occupied by snake.
 bool Snake::SnakeCell(int x, int y) {

@@ -92,7 +92,6 @@ CMakeFiles/SnakeGame.dir/src/game.cpp.o: /usr/include/SDL2/SDL_system.h
 CMakeFiles/SnakeGame.dir/src/game.cpp.o: /usr/include/SDL2/SDL_thread.h
 CMakeFiles/SnakeGame.dir/src/game.cpp.o: /usr/include/SDL2/SDL_timer.h
 CMakeFiles/SnakeGame.dir/src/game.cpp.o: /usr/include/SDL2/SDL_touch.h
-CMakeFiles/SnakeGame.dir/src/game.cpp.o: /usr/include/SDL2/SDL_ttf.h
 CMakeFiles/SnakeGame.dir/src/game.cpp.o: /usr/include/SDL2/SDL_version.h
 CMakeFiles/SnakeGame.dir/src/game.cpp.o: /usr/include/SDL2/SDL_video.h
 CMakeFiles/SnakeGame.dir/src/game.cpp.o: /usr/include/SDL2/begin_code.h
@@ -142,7 +141,6 @@ CMakeFiles/SnakeGame.dir/src/main.cpp.o: /usr/include/SDL2/SDL_system.h
 CMakeFiles/SnakeGame.dir/src/main.cpp.o: /usr/include/SDL2/SDL_thread.h
 CMakeFiles/SnakeGame.dir/src/main.cpp.o: /usr/include/SDL2/SDL_timer.h
 CMakeFiles/SnakeGame.dir/src/main.cpp.o: /usr/include/SDL2/SDL_touch.h
-CMakeFiles/SnakeGame.dir/src/main.cpp.o: /usr/include/SDL2/SDL_ttf.h
 CMakeFiles/SnakeGame.dir/src/main.cpp.o: /usr/include/SDL2/SDL_version.h
 CMakeFiles/SnakeGame.dir/src/main.cpp.o: /usr/include/SDL2/SDL_video.h
 CMakeFiles/SnakeGame.dir/src/main.cpp.o: /usr/include/SDL2/begin_code.h
@@ -190,7 +188,6 @@ CMakeFiles/SnakeGame.dir/src/renderer.cpp.o: /usr/include/SDL2/SDL_system.h
 CMakeFiles/SnakeGame.dir/src/renderer.cpp.o: /usr/include/SDL2/SDL_thread.h
 CMakeFiles/SnakeGame.dir/src/renderer.cpp.o: /usr/include/SDL2/SDL_timer.h
 CMakeFiles/SnakeGame.dir/src/renderer.cpp.o: /usr/include/SDL2/SDL_touch.h
-CMakeFiles/SnakeGame.dir/src/renderer.cpp.o: /usr/include/SDL2/SDL_ttf.h
 CMakeFiles/SnakeGame.dir/src/renderer.cpp.o: /usr/include/SDL2/SDL_version.h
 CMakeFiles/SnakeGame.dir/src/renderer.cpp.o: /usr/include/SDL2/SDL_video.h
 CMakeFiles/SnakeGame.dir/src/renderer.cpp.o: /usr/include/SDL2/begin_code.h

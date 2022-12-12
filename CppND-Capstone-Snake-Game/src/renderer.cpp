@@ -1,4 +1,5 @@
 #include "renderer.h"
+#include "snake.h"
 #include <iostream>
 #include <string>
 
@@ -14,7 +15,7 @@ Renderer::Renderer(const std::size_t screen_width,
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     std::cerr << "SDL could not initialize.\n";
     std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
-  }
+  }      
 
   // Create Window
   sdl_window = SDL_CreateWindow("Snake Game", SDL_WINDOWPOS_CENTERED,
@@ -33,9 +34,6 @@ Renderer::Renderer(const std::size_t screen_width,
     std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
   }
         
-//   path = SDL_GetBasePath();
-//   path += "../Chopic.ttf";
-//   textFont = TTF_OpenFont(path.c_str(), 40);
   
 }
 
@@ -44,7 +42,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food) {
+void Renderer::Render(Snake const snake, SDL_Point const &food, SDL_Point const &object, SDL_Point const &bad_food) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -53,15 +51,17 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
   SDL_RenderClear(sdl_renderer);
   
-  //NEW: Prateek Code for Intro Screen
-
-  IntroScreen(block);
-//   SDL_Event e;
-//   while (SDL_PollEvent(&e)) {
-//     if (e.type == SDL_KEYDOWN) {
-//       SDL_Log("Let the games begin...");
-//     }
-//   }
+  // Render object
+  SDL_SetRenderDrawColor(sdl_renderer, 0x0, 0x0, 0x0, 0x0);
+  block.x = object.x * block.w;
+  block.y = object.y * block.h;
+  SDL_RenderFillRect(sdl_renderer, &block);
+  
+  // Render bad food
+  SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x99, 0x32, 0xCC);
+  block.x = bad_food.x * block.w;
+  block.y = bad_food.y * block.h;
+  SDL_RenderFillRect(sdl_renderer, &block);
     
   // Render food
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xCC, 0x00, 0xFF);
@@ -91,28 +91,26 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   SDL_RenderPresent(sdl_renderer);
 }
 
-//NEW: Prateek Code for Intro Screen
-void Renderer::IntroScreen(SDL_Rect& block) {
-	intro_statement = "Welcome to the Snake Game. In this game, you control a snake that is looking for food. Using the 'W', 'A', 'S', and 'D' keyboard characters, you can move the snake up, left, down, or right. When you eat a piece of food, your snake's tail will grow longer. In addition, you will lose the game if you hit the wall borders or an obstacle. Press the 'ENTER' key to start.";
-  	
-  	int SDL_QueryTexture_W = 20;
- 	int SDL_QueryTexture_H = 20;
-  	SDL_Color c = {255, 255, 255};
+//Prateek Code: added messages for the damage counter when in danger and when dead
+void Renderer::UpdateWindowTitle(int score, int fps, int& damage, bool& happen, Snake& snake) {
   
-  	path = SDL_GetBasePath();
-  	path += "../Chopic.ttf";
-  	textFont = TTF_OpenFont(path.c_str(), 40);
+  std::string warning_title = "DYING";
+  std::string warning = "If your damage = 2, you'll lose.";
   
-  	textAppearance = TTF_RenderText_Blended_Wrapped(textFont, intro_statement.c_str(), c, 100);
-  	area = SDL_CreateTextureFromSurface(sdl_renderer, textAppearance);
+  std::string death_title = "DIED";
+  std::string death_message = "Damage = 2, you've lost.";
   
-  	SDL_QueryTexture(area, NULL, NULL, &SDL_QueryTexture_W, &SDL_QueryTexture_H);
- 	SDL_Rect dstrect = {0, 0, SDL_QueryTexture_W, SDL_QueryTexture_H};
-  	SDL_RenderCopy(sdl_renderer, area, NULL, &dstrect);
-
-}
-
-void Renderer::UpdateWindowTitle(int score, int fps) {
-  std::string title{"Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
+  std::string title{"Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps) + " Damage: " + std::to_string(damage)};
+ 	
+  if (damage == 1 && happen == false) { 
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, warning_title.c_str(), warning.c_str(), sdl_window);
+    happen = true;
+  }
+  
+  if (damage == 2) {
+    snake.alive = false;
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, death_title.c_str(), death_message.c_str(), sdl_window);
+  }
+  
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }
